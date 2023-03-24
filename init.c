@@ -6,51 +6,54 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:38:17 by malancar          #+#    #+#             */
-/*   Updated: 2023/03/23 05:50:08 by malancar         ###   ########.fr       */
+/*   Updated: 2023/03/24 17:40:51 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	init_win_and_img(t_data *img, t_mlx *mlx)
+void	init_win_and_img(t_data *img, void *mlx, void *win)
 {
-	mlx->mlx = mlx_init();
-	mlx->win = mlx_new_window(mlx->mlx, 1000, 1000, "TEST");
-	img->img = mlx_new_image(mlx->mlx, 1000, 1000);
+	mlx = mlx_init();
+	win = mlx_new_window(mlx, 1000, 1000, "TEST");
+	img->img = mlx_new_image(mlx, 1000, 1000);
 	img->addr = (int *)mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
 }
 
-void	put_pixel(t_data *img, t_mlx mlx)
+void	put_pixel(t_data *img, void *mlx, void 	*win)
 {
-	t_color	color;
+	t_color	color;	
+	int		img_height;
+	int		img_width;
 	
-	img->height = 0;
 	color.finish = 255;
 	color.start = 0xFF0000;
 	color.interval = 1440;
-	while (img->height < 1440)
+	img_height = 0;
+	while (img_height < 1000)
 	{
-		img->width = 0;
-		while (img->width < 2560)
+		img_width = 0;
+		while (img_width < 1000)
 		{
 			
-			img->addr[img->height * 2560 + img->width] = (int) (((double) color.finish / color.interval) * (img->height)) * 256 + color.start;
-			img->width++;
+			img->addr[img_height * 1000 + img_width] = (int) (((double) color.finish / color.interval) * (img_height)) * 256 + color.start;
+			img_width++;
 		}
-		img->height++;
+		img_height++;
 	}
-	mlx_put_image_to_window(mlx.mlx, mlx.win, img->img, 0, 0);
-	mlx_loop(mlx.mlx);
+	mlx_put_image_to_window(mlx, win, img->img, 0, 0);
+	mlx_loop(mlx);
 }
 
 int	main()
 {
 	t_data	img;
-	t_mlx	mlx;
+	void	*mlx;
+	void	*win;
 
-	mlx.mlx = NULL;
-	mlx.win = NULL;
-	init_win_and_img(&img, &mlx);
-	put_pixel(&img, mlx);
+	mlx = NULL;
+	win = NULL;
+	init_win_and_img(&img, &mlx, &win);
+	put_pixel(&img, mlx, win);
 	
 }
