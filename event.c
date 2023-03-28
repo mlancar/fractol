@@ -6,37 +6,34 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 19:07:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/03/27 21:57:42 by malancar         ###   ########.fr       */
+/*   Updated: 2023/03/28 06:40:43 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "mlx/mlx.h"
+#include <stdio.h>
 
-int	close(void *win, int keycode, void *mlx)
+int	close(void *win, void *mlx)
 {
 	mlx_destroy_window(mlx, win);
 	return (0);
 }
 
-int	no_event(void *mlx)
+int	key_hook(int keycode, void *mlx, void *win)
 {
-	return(0);
-}
-
-int	key_pressed(void *win, int key_code, void *mlx)
-{
-	if (key_code == XK_q)
-		mlx_destroy_window(mlx, win);
-	printf("key_pressed = %d\n", key_code);
+	if (keycode == 113)
+		close(win, mlx);
 	return (0);
 }
 
-int	key_released(void *win, int key_code, void *mlx)
+int main()
 {
-	printf("key_released = %d\n", key_code);
-	return (0);
+	void *mlx;
+	void *win;
+	
+	mlx = mlx_init();
+	win = mlx_new_window(mlx, 640, 480, "Hello world!");
+	mlx_key_hook(win, key_hook, &mlx);
+	mlx_hook(win, 113, 1L<<0, close, &mlx);
+	mlx_loop(mlx);
 }
-
-
-mlx_hook(win, 2, 1L<<0, close, &mlx);
-mlx_key_hook(win, mlx_hook, &mlx);
-mlx_mouse_hook(win, close, &mlx);
