@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 21:04:24 by malancar          #+#    #+#             */
-/*   Updated: 2023/03/31 00:53:03 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/04 17:51:55 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,78 +32,75 @@ int main()
 {
 	t_data	img;
 	t_color	color;
+	t_size	height;
+	t_size	width;
+	
 	void	*mlx;
 	void	*win;
+	
 	double		line;
-	int		win_height;
-	int		win_width;
-	int		img_height;
-	int		img_width;
-	int		gradient;
+	
+	t_nbr	max;
+	t_nbr	min;
 	double	x;
 	double	y;
-	double	x_min;
-	double	y_min;
-	double	x_max;
-	double	y_max;
-	
 
-	win_height = 1440;
-	win_width	= 2560;
+	height.window = 1440;
+	width.window = 2560;
 	
 	mlx = mlx_init();
-	win = mlx_new_window(mlx, win_width, win_height, "RAINBOW");
+	win = mlx_new_window(mlx, width.window, height.window, "RAINBOW");
 	mlx_key_hook(win, key_hook, mlx);
 	mlx_hook(win, 113, 1L<<0, close, &mlx);
 
-	img.img = mlx_new_image(mlx, win_width, win_height);
+	img.img = mlx_new_image(mlx, width.window, height.window);
 	img.addr = (int *)mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	
-	img_height = 0;
+	height.image = 0;
 	
-	color.nbr = win_height;
+	color.nbr = height.window;
 	color.delta = 0xFF;
 	color.pixel = 0xFF0000;
 	color.gradient = 6;
 	color.per_gradient = color.nbr / color.gradient; 
-	color.per_pixel = (double) win_height / color.nbr;
+	color.per_pixel = (double) height.window / color.nbr;
 	color.interval = 0;
-	while (img_height < win_height)
+	while (height.image < height.window)
 	{
-		img_width = 0;
-		while (img_width < win_width)
+		width.image = 0;
+		while (width.image < width.window)
 		{
-			line = img_height / color.per_pixel;
-			img.addr[img_height * win_width + img_width] =  color.pixel;
+			line = height.image / color.per_pixel;
+			img.addr[height.image * width.window + width.image] =  color.pixel;
 			if (line > color.interval)
 			{
 				color.pixel = color.pixel + color.delta / color.per_gradient * find_position(color.per_gradient, color.interval);
 				color.interval++;
 			}
-			img_width++;
+			width.image++;
 		}
-		img_height++;
+		height.image++;
 	}
 	color.pixel = BLACK;
-	img_height = 0;
-	x_min = -5;
-	y_min = -5;
-	x_max = 5;
-	y_max = 5;
-	while (img_height < win_height)
+	height.image = 0;
+	min.y = -5;
+	min.x = -5;
+	max.x = 5;
+	max.y = 5;
+	while (height.image < height.window)
 	{
-		img_width = 0;
-		while (img_width < win_width)
+		width.image = 0;
+		while (width.image < width.window)
 		{
-			x = x_min + ((x_max - x_min) / win_width) * img_width;
-			y = y_max - ((y_max - y_min) / win_height) * img_height; 
+			x = min.x + ((max.x - min.x) / width.window) * width.image;
+			y = max.y - ((max.y - min.y) / height.window) * height.image;
 			if (y - (2 * x + 2) >= 0 && y - (2 * x + 2) <= 0.1)
 			{
-				img.addr[img_height * win_width + img_width] = color.pixel;
+				img.addr[height.image * width.window + width.image] = color.pixel;
 			}
-			img_width++;
+			width.image++;
 		}
-		img_height++;
+		height.image++;
 	}
 
 	mlx_put_image_to_window(mlx, win, img.img, 0, 0);

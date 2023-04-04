@@ -1,26 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event.c                                            :+:      :+:    :+:   */
+/*   teste.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/27 19:07:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/04 19:08:10 by malancar         ###   ########.fr       */
+/*   Created: 2023/03/22 20:01:41 by malancar          #+#    #+#             */
+/*   Updated: 2023/03/22 20:41:20 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx/mlx.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-int	close(void *mlx)
+void	calcul(int max, int inter)
 {
-	mlx_loop_end(mlx);
-	return (0);
+	int	nb;
+	
+	nb = max / inter;
+	while(nb <=  max)
+	{
+		printf("nb = %d\n", nb);
+		nb = nb + (max / inter);
+	}
 }
 
-int	key_hook(int keycode, void *mlx)
+int	find_color(int max, int inter, int color)
+{	
+	color = max / inter;
+	color = color + (max / inter);
+	return (color);
+}
+
+int	main(int ac, char ** av)
 {
-	if (keycode == 113)
-		close(mlx);
-	return (0);
+	if (ac == 3)
+		calcul(atoi(av[1]), atoi(av[2]));
+	else
+		return(0);
 }

@@ -6,24 +6,11 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/28 06:07:32 by malancar          #+#    #+#             */
-/*   Updated: 2023/03/30 22:57:51 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/04 19:27:41 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
-int	close(void *mlx)
-{
-	mlx_loop_end(mlx);
-	return (0);
-}
-
-int	key_hook(int keycode, void *mlx)
-{
-	if (keycode == 113)
-		close(mlx);
-	return (0);
-}
 
 int main()
 {
@@ -51,13 +38,20 @@ int main()
 	img.addr = (int *)mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
 	
 	img_height = 0;
-	position = -CHANGE_RED;
+	position = CHANGE_RED;
 	color.nbr = win_height;
 	color.delta = 0xFF;
-	color.pixel = GREEN;
+	color.pixel = BLUE;
 	color.gradient = 1;
 	color.per_gradient = color.nbr / color.gradient; 
 	color.per_pixel = (double) win_height / color.nbr;
+	printf("color.nbr %d\n", color.nbr);
+	printf("color.delta %d\n", color.delta);
+	printf("color.pixel %d\n", color.pixel);
+	printf("color.gradient %d\n", color.gradient);
+	printf("color.per_gradient%d\n", color.per_gradient);
+	printf("color.per_pixel %f\n", color.per_pixel);
+	//printf("color.interval %d\n", color.interval);
 	//color.interval = 1000;
 	while (img_height < win_height)
 	{
