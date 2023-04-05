@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:48:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/04 19:28:32 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/05 18:50:58 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 
 #include "mlx/mlx.h"
 #include <stddef.h>
+#include <stdlib.h>
 
 typedef struct s_data {
 	void	*img;
@@ -38,9 +39,10 @@ typedef struct s_data {
 
 
 typedef struct s_size {
-	int		image;
-	int		window;
+	int		height;
+	int		width;
 }	t_size;
+
 
 typedef struct s_color {
 	int			nbr;
@@ -56,19 +58,24 @@ typedef struct s_color {
 typedef struct s_nbr {
 	double	x;
 	double	y;
+	double	min;
+	double	max;
+	double	center;
+
 }	t_nbr;
 
 int		key_hook(int keycode, void *mlx);
 int		close(void *mlx);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_putstr(char *str);
-void	init_win_and_img(t_data *img, void *mlx, void *win);
-void	put_pixel(t_data *img, void *mlx, void *win);
+void	init_win_and_img(t_data *img, void **mlx, void **win);
 int		find_position(int color_per_gradient, int interval);
 int		find_position2(int color_per_gradient, int interval);
-void	rainbow(t_data *img, void *mlx, void *win);
-void	gradient (t_data *img, void *mlx, void *win);
-t_color	init_color_rainbow(t_color color, t_size height);
-t_color	init_color_gradient(t_color color, t_size height);
+void	rainbow(t_data *img, void *mlx, void *win, t_size window);
+void	gradient (t_data *img, void *mlx, void *win, t_size window);
+t_color	init_color_rainbow(t_color color, t_size window);
+t_color	init_color_gradient(t_color color, t_size window);
+void	circle(t_data *img, void *mlx, void *win, t_size window);
+void 	init_repere(t_nbr *x, t_nbr *y);
 
 # endif

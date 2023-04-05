@@ -6,26 +6,13 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/16 21:04:24 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/04 17:51:55 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:18:55 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mlx/mlx.h"
 #include "fractol.h"
 #include <stdio.h>
-
-int	close(void *mlx)
-{
-	mlx_loop_end(mlx);
-	return (0);
-}
-
-int	key_hook(int keycode, void *mlx)
-{
-	if (keycode == 113)
-		close(mlx);
-	return (0);
-}
 
 
 int main()
@@ -40,13 +27,12 @@ int main()
 	
 	double		line;
 	
-	t_nbr	max;
-	t_nbr	min;
-	double	x;
-	double	y;
+	t_nbr	x;
+	t_nbr	y;
 
-	height.window = 1440;
-	width.window = 2560;
+
+	height.window = 1000;
+	width.window = 1000;
 	
 	mlx = mlx_init();
 	win = mlx_new_window(mlx, width.window, height.window, "RAINBOW");
@@ -81,13 +67,44 @@ int main()
 		}
 		height.image++;
 	}
+	int position = CHANGE_RED;
+	color.nbr = height.window;
+	color.delta = 0xFF;
+	color.pixel = BLUE;
+	color.gradient = 1;
+	color.per_gradient = color.nbr / color.gradient; 
+	color.per_pixel = (double) height.window / color.nbr;
+	//DROITE ET CERCLE :
 	color.pixel = BLACK;
 	height.image = 0;
-	min.y = -5;
-	min.x = -5;
-	max.x = 5;
-	max.y = 5;
+	//MON REPERE :
+	y.min = -5;
+	x.min = -5;
+	y.max = 5;
+	x.max = 5;
+	//EQUATION DROITE : y = ax + b => (y - ax + b) entre 0 et 0.1
+	//CERCLE : (x - xc)^2 + (y - yc)^2 = R^2
+	x.center = 0;
+	y.center = 0;
+	double radius = 1.5;
 	while (height.image < height.window)
+	{
+		width.image = 0;
+		while (width.image < width.window)
+		{
+			x.x = x.min + ((x.max - x.min) / width.window) * width.image;
+			y.y = y.max - ((y.max - y.min) / height.window) * height.image;
+			if (((radius * radius) - (((x.x - x.center) * (x.x - x.center)) + ((y.y - y.center) * (y.y - y.center))) >= -0.1) && ((radius * radius) - (((x.x - x.center) * (x.x - x.center)) + ((y.y - y.center) * (y.y - y.center))) >= -0.1))
+			{
+				color.pixel =  (int) (((double) color.delta / color.nbr) * (height.image)) * position;
+				img.addr[height.image * width.window + width.image] = color.pixel;
+			}
+			width.image++;
+		}
+		height.image++;
+	}
+	
+	/*while (height.image < height.window)
 	{
 		width.image = 0;
 		while (width.image < width.window)
@@ -101,7 +118,7 @@ int main()
 			width.image++;
 		}
 		height.image++;
-	}
+	}*/
 
 	mlx_put_image_to_window(mlx, win, img.img, 0, 0);
 	mlx_loop(mlx);
