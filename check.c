@@ -1,21 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   event.c                                            :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/27 19:07:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/07 18:04:43 by malancar         ###   ########.fr       */
+/*   Created: 2023/04/05 16:51:52 by malancar          #+#    #+#             */
+/*   Updated: 2023/04/07 18:04:37 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	key_hook(int keycode, void *mlx)
+int	check_arg(int ac, char **av)
 {
-	if (keycode == 113) {
-		mlx_loop_end(mlx);
+	int		i;
+	char	*julia;
+	char	*mandelbrot;
+
+	i = 1;
+	julia = "Julia";
+	mandelbrot = "Mandelbrot";
+	if (ac < 2)
+	{
+		ft_putstr("Please enter a fractal name\n");
+		return (0);
 	}
-	return (0);
+	if ((ft_strcmp(av[1], julia) != 0) && (ft_strcmp(av[1], mandelbrot) != 0))
+	{
+		ft_putstr("Wrong fractal name. Did you mean \"Julia\" ? Or \"Mandelbrot\" ?\n");
+		return (0);
+	}
+	return (1);
 }

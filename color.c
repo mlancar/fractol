@@ -6,11 +6,34 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 19:19:20 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/05 17:41:42 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/07 19:16:59 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
+
+t_color	init_color_rainbow(t_color color, t_size window)
+{
+	color.nbr = window.height;
+	color.delta = 0xFF;
+	color.pixel = RED;
+	color.gradient = 6;
+	color.per_gradient = color.nbr / color.gradient; 
+	color.per_pixel = (double) window.height / color.nbr;
+	color.interval = 0;
+	return (color);
+}
+
+t_color	init_color_gradient(t_color color, t_size window)
+{
+	color.nbr = window.height;
+	color.delta = 0xFF;
+	color.pixel = YELLOW;
+	color.gradient = 1;
+	color.per_gradient = color.nbr / color.gradient; 
+	color.per_pixel = (double) window.height/ color.nbr;
+	return (color);
+}
 
 void	gradient (t_data *img, void *mlx, void *win, t_size window)
 {
@@ -59,4 +82,24 @@ void	rainbow(t_data *img, void *mlx, void *win, t_size window)
 		image.height++;
 	}
 	mlx_put_image_to_window(mlx, win, img->img, 0, 0);
+}
+
+int		find_position(int color_per_gradient, int interval)
+{
+	int	x;
+	
+	x = 1;
+	if (interval < color_per_gradient)
+		x = 16 * 16;
+	else if (interval < (color_per_gradient * 2))
+		x = -(16 * 16 * 16 * 16);
+	else if (interval < (color_per_gradient * 3))
+			x = 1;
+	else if (interval < (color_per_gradient * 4))
+		x = -(16 * 16);
+	else if (interval < (color_per_gradient * 5))
+		x = 16 * 16 * 16 * 16;
+	else if (interval < (color_per_gradient * 6))
+		x = -1;
+	return (x);
 }
