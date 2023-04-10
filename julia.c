@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:02:58 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/07 18:53:39 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/10 16:42:06 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void 	init_julia_graph(t_graph *x, t_graph *y, t_size image, t_size window)
 
 void	init_julia_set(t_set *z, t_graph *x, t_graph *y)
 {
-	z->c_r = 0.285;
-	z->c_i = 0.01;
+	z->c_r = 0.285;//parametre
+	z->c_i = 0.01;//parametre
 	z->r = x->x;
 	z->i = y->y;
 	z->n = 0;
@@ -44,8 +44,8 @@ void	color_julia_set(t_data *img, t_size image, t_size window, t_set *z, t_color
 {
 	if (z->n == z->iteration_max)
 		img->addr[image.height * window.width + image.width] = BLACK;
-	else 
-		img->addr[image.height * window.width + image.width] = BLUE + (int) (((double) color.delta / z->n) * (z->iteration_max)) * CHANGE_BLUE;
+	else
+		img->addr[image.height * window.width + image.width] =  0x2E0249 + (int) (255.0 * z->n / z->iteration_max) * CHANGE_RED;
 }
 
 void	julia(t_data *img, void *mlx, void *win, t_size window)
@@ -66,10 +66,8 @@ void	julia(t_data *img, void *mlx, void *win, t_size window)
 			init_julia_graph(&x, &y, image, window);
 			init_julia_set(&z, &x, &y);
 			while (((z.r * z.r) + (z.i * z.i)) < 4 && z.n < z.iteration_max)
-			{
 				re_init_julia_set(&z);
-				color_julia_set(img, image, window, &z, color);
-			}
+			color_julia_set(img, image, window, &z, color);
 			image.width++;
 		}
 		image.height++;

@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:48:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/07 19:18:00 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:29:42 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,20 @@
 #define CHANGE_RED 16 * 16 * 16 * 16
 #define CHANGE_GREEN 16 * 16
 #define CHANGE_BLUE 1
+#define	UP 65362
+#define DOWN 65364
+#define LEFT 65361
+#define RIGHT 65363
+#define ESC 65307
+#define CLICKRIGHT 3
+#define CLICKLEFT 1
+#define ZOOMIN 4
+#define ZOMMOUT 5
 
 #include "mlx/mlx.h"
 #include <stddef.h>
 #include <stdlib.h>
+#include <math.h>
 
 typedef struct s_data {
 	void	*img;
@@ -72,6 +82,7 @@ typedef struct s_set {
 	double	iteration_max;
 }	t_set;
 
+int		mouse_hook(int mousecode, void *mlx);
 int		key_hook(int keycode, void *mlx);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_putstr(char *str);
@@ -85,7 +96,7 @@ void	circle(t_data *img, void *mlx, void *win, t_size window);
 void 	init_graph(t_graph *x, t_graph *y);
 void	init_mandelbrot_graph(t_graph *x, t_graph *y, t_size image, t_size window);
 void	init_mandelbrot_set(t_set *z, t_graph *x, t_graph *y);
-void	re_init_mandelbrotset(t_set *z);
+void	re_init_mandelbrot_set(t_set *z);
 void	color_mandelbrot_set(t_data *img, t_size image, t_size window, t_set *z, t_color color);
 void	mandelbrot(t_data *img, void *mlx, void *win, t_size window);
 void	init_julia_graph(t_graph *x, t_graph *y, t_size image, t_size window);
