@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:48:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/10 17:29:42 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/11 17:30:34 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <math.h>
+#include <stdio.h>
 
 typedef struct s_data {
 	void	*img;
@@ -46,12 +47,6 @@ typedef struct s_data {
 	int		line_length;
 	int		endian;
 }	t_data;
-
-typedef struct s_size {
-	int		height;
-	int		width;
-}	t_size;
-
 
 typedef struct s_color {
 	int			nbr;
@@ -67,9 +62,19 @@ typedef struct s_color {
 typedef struct s_graph {
 	double	x;
 	double	y;
-	double	min;
-	double	max;
+	double	x_min;
+	double	x_max;
+	double	y_min;
+	double	y_max;
 	double	center;
+	void	*mlx;
+	void	*win;
+	int		win_height;
+	int		win_width;
+	int		img_height;
+	int		img_width;
+	double	zoom;
+	t_data	img;
 }	t_graph;
 
 typedef struct s_set {
@@ -82,27 +87,28 @@ typedef struct s_set {
 	double	iteration_max;
 }	t_set;
 
-int		mouse_hook(int mousecode, void *mlx);
-int		key_hook(int keycode, void *mlx);
+void	zoomin(t_graph *var);
+int		mouse_hook(int mousecode, t_graph *var);
+int		key_hook(int keycode, t_graph *var);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_putstr(char *str);
-void	init_win_and_img(t_data *img, void **mlx, void **win);
+void	init_win_and_img(t_graph *var);
 int		find_position(int color_per_gradient, int interval);
-t_color	init_color_rainbow(t_color color, t_size window);
-t_color	init_color_gradient(t_color color, t_size window);
-void	rainbow(t_data *img, void *mlx, void *win, t_size window);
-void	gradient (t_data *img, void *mlx, void *win, t_size window);
-void	circle(t_data *img, void *mlx, void *win, t_size window);
-void 	init_graph(t_graph *x, t_graph *y);
-void	init_mandelbrot_graph(t_graph *x, t_graph *y, t_size image, t_size window);
-void	init_mandelbrot_set(t_set *z, t_graph *x, t_graph *y);
+t_color	init_color_rainbow(t_color color, t_graph *var);
+t_color	init_color_gradient(t_color color, t_graph *var);
+void	rainbow(t_graph *var);
+void	gradient (t_graph *var);
+void	circle(t_graph *var);
+void 	init_graph(t_graph *var);
+void	init_mandelbrot_graph(t_graph *var);
+void	init_mandelbrot_set(t_set *z, t_graph *var);
 void	re_init_mandelbrot_set(t_set *z);
-void	color_mandelbrot_set(t_data *img, t_size image, t_size window, t_set *z, t_color color);
-void	mandelbrot(t_data *img, void *mlx, void *win, t_size window);
-void	init_julia_graph(t_graph *x, t_graph *y, t_size image, t_size window);
-void	init_julia_set(t_set *z, t_graph *x, t_graph *y);
+void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color);
+void	mandelbrot(t_graph *var);
+void	init_julia_graph(t_graph *var);
+void	init_julia_set(t_set *z, t_graph *var);
 void	re_init_julia_set(t_set *z);
-void	color_julia_set(t_data *img, t_size image, t_size window, t_set *z, t_color color);
-void	julia(t_data *img, void *mlx, void *win, t_size window);
+void	color_julia_set(t_graph *var, t_set *z, t_color color);
+void	julia(t_graph *var);
 
 # endif

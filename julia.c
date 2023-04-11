@@ -6,30 +6,33 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:02:58 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/10 16:42:06 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/11 19:01:44 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void 	init_julia_graph(t_graph *x, t_graph *y, t_size image, t_size window)
+void 	init_julia_graph(t_graph *var)
 {
-	x->min = -1;
-	y->min = -1.2;
-	y->max = 1.2;
-	x->max = 1;
-	x->x = x->min + ((x->max - x->min) / window.width) * image.width;
-	y->y = y->max - ((y->max - y->min) / window.height) * image.height;
+	//printf("avant init%f\n", var->zoom);
+	var->x_min = -1 + var->zoom;
+	var->x_max = 1 + var->zoom;
+	var->y_min = -1.2 + var->zoom;
+	var->y_max = 1.2 + var->zoom;
+	//printf("y_max init%f\n", var->y_max);
+	
+	var->x = var->x_min + ((var->x_max - var->x_min) / var->win_width) * var->img_width;
+	var->y = var->y_max - ((var->y_max - var->y_min) / var->win_height) * var->img_height;
 }
 
-void	init_julia_set(t_set *z, t_graph *x, t_graph *y)
+void	init_julia_set(t_set *z, t_graph *var)
 {
 	z->c_r = 0.285;//parametre
 	z->c_i = 0.01;//parametre
-	z->r = x->x;
-	z->i = y->y;
+	z->r = var->x;
+	z->i = var->y;
 	z->n = 0;
-	z->iteration_max = 100;
+	z->iteration_max = 120;
 }
 
 void	re_init_julia_set(t_set *z)
@@ -40,37 +43,45 @@ void	re_init_julia_set(t_set *z)
 	z->n = z->n + 1;
 }
 
-void	color_julia_set(t_data *img, t_size image, t_size window, t_set *z, t_color color)
+void	color_julia_set(t_graph *var, t_set *z, t_color color)
 {
 	if (z->n == z->iteration_max)
-		img->addr[image.height * window.width + image.width] = BLACK;
+		var->img.addr[var->img_height * var->win_width + var->img_width] = 0x000000;
+	/*else
+	{
+		color.pixel =   0x94BCE0 + (int) (4000 * z->n / z->iteration_max) * CHANGE_GREEN;
+		if (color.pixel == 0x9494E0)
+			color.pixel =   0x9494E0 + (int) (4000 * z->n / z->iteration_max) * CHANGE_RED;
+		var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel;
+	}*/
 	else
-		img->addr[image.height * window.width + image.width] =  0x2E0249 + (int) (255.0 * z->n / z->iteration_max) * CHANGE_RED;
+	{
+		color.pixel =   0x320053 + (int) (4000 * z->n / z->iteration_max) * CHANGE_RED;
+		var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel;
+	}
 }
 
-void	julia(t_data *img, void *mlx, void *win, t_size window)
+void	julia(t_graph *var)
 {
-	t_graph	x;
-	t_graph	y;
 	t_color	color;
-	t_size	image;
 	t_set		z;
 	
-	image.height = 0;
-	color = init_color_gradient(color, window);
-	while (image.height < window.height)
+	var->img_height = 0;
+	color = init_color_gradient(color, var);
+	while (var->img_height < var->win_height)
 	{
-		image.width = 0;
-		while (image.width < window.width)
+		var->img_width = 0;
+		while (var->img_width < var->win_width)
 		{
-			init_julia_graph(&x, &y, image, window);
-			init_julia_set(&z, &x, &y);
+			init_julia_graph(var);
+			init_julia_set(&z, var);
 			while (((z.r * z.r) + (z.i * z.i)) < 4 && z.n < z.iteration_max)
 				re_init_julia_set(&z);
-			color_julia_set(img, image, window, &z, color);
-			image.width++;
+			color_julia_set(var, &z, color);
+			var->img_width++;
 		}
-		image.height++;
+		var->img_height++;
 	}
-	mlx_put_image_to_window(mlx, win, img->img, 0, 0);
+	printf("%d\n", color.pixel);
+	mlx_put_image_to_window(var->mlx, var->win, var->img.img, 0, 0);
 }

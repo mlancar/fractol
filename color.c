@@ -6,82 +6,80 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 19:19:20 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/10 16:15:09 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/11 16:36:01 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-t_color	init_color_rainbow(t_color color, t_size window)
+t_color	init_color_rainbow(t_color color, t_graph *var)
 {
-	color.nbr = window.height;
+	color.nbr = var->win_height;
 	color.delta = 0xFF;
 	color.pixel = RED;
 	color.gradient = 6;
 	color.per_gradient = color.nbr / color.gradient; 
-	color.per_pixel = (double) window.height / color.nbr;
+	color.per_pixel = (double) var->win_height / color.nbr;
 	color.interval = 0;
 	return (color);
 }
 
-t_color	init_color_gradient(t_color color, t_size window)
+t_color	init_color_gradient(t_color color, t_graph *var)
 {
-	color.nbr = window.height;
+	color.nbr = var->win_height;
 	color.delta = 0xFF;
 	color.pixel = YELLOW;
 	color.gradient = 1;
 	color.per_gradient = color.nbr / color.gradient; 
-	color.per_pixel = (double) window.height/ color.nbr;
+	color.per_pixel = (double) var->win_height/ color.nbr;
 	return (color);
 }
 
-void	gradient (t_data *img, void *mlx, void *win, t_size window)
+void	gradient (t_graph *var)
 {
 	t_color	color;
-	t_size	image;
-	int	position;
+	int		position;
 
 	position = CHANGE_RED;
-	image.height = 0;
-	color = init_color_gradient(color, window);
-	while (image.height< window.height)
+	var->img_height = 0;
+	color = init_color_gradient(color, var);
+	while (var->img_height < var->win_height)
 	{
-		image.width = 0;
-		while (image.width < window.width)
+		var->img_width = 0;
+		while (var->img_width < var->win_width)
 		{
-			img->addr[image.height * window.width + image.width] = color.pixel + (int) (((double) color.delta / color.nbr) * (image.height)) * position;
-			image.width++;
+			var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel + (int) (((double) color.delta / color.nbr) * (var->img_height)) * position;
+			var->img_width++;
 		}
-		image.height++;
+		var->img_height++;
 	}
-	mlx_put_image_to_window(mlx, win, img->img, 0, 0);
+	mlx_put_image_to_window(var->mlx, var->win, var->img.img, 0, 0);
 }
 
-void	rainbow(t_data *img, void *mlx, void *win, t_size window)
+void	rainbow(t_graph *var)
 {
 	t_color	color;
-	t_size	image;
 	double	line;
 	
-	image.height= 0;
-	color = init_color_rainbow(color, window);
-	while (image.height < window.height)
+	var->img_height= 0;
+	color = init_color_rainbow(color, var);
+	while (var->img_height < var->win_height)
 	{
-		image.width = 0;
-		while (image.width < window.width)
+		var->img_width = 0;
+		while (var->img_width < var->win_width)
 		{
-			line = image.height/ color.per_pixel;
-			img->addr[image.height * window.width + image.width] =  color.pixel;
+			line = var->img_height/ color.per_pixel;
+			var->img.addr[var->img_height * var->win_width + var->img_width] =  color.pixel;
 			if (line > color.interval)
 			{
 				color.pixel = color.pixel + color.delta / color.per_gradient * find_position(color.per_gradient, color.interval);
 				color.interval++;
 			}
-			image.width++;
+			var->img_width++;
 		}
-		image.height++;
+		var->img_height++;
 	}
-	mlx_put_image_to_window(mlx, win, img->img, 0, 0);
+	mlx_put_image_to_window(var->mlx, var->win, var->img.img, 0, 0);
 }
 
 int		find_position(int color_per_gradient, int interval)

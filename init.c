@@ -6,47 +6,45 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:38:17 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/10 17:22:21 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/11 18:35:18 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 #include <stdio.h>
 
-void	init_win_and_img(t_data *img, void **mlx, void **win)
+void	init_win_and_img(t_graph *var)
 {
-	t_size	window;
-	
-	window.height = 1000;
-	window.width = 1000;
-	*mlx = mlx_init();
-	*win = mlx_new_window(*mlx, window.width, window.height, "TEST");
-	mlx_key_hook(*win, key_hook, *mlx);
-	mlx_mouse_hook(*win, mouse_hook, *mlx);
-	img->img = mlx_new_image(*mlx, window.width, window.height);
-	img->addr = (int *)mlx_get_data_addr(img->img, &img->bits_per_pixel, &img->line_length, &img->endian);
+		
+	var->win_height = 1000;
+	var->win_width = 1000;
+	var->mlx = mlx_init();
+	var->win = mlx_new_window(var->mlx, var->win_width, var->win_height, "TEST");
+	mlx_key_hook(var->win, key_hook, var->mlx);
+	mlx_mouse_hook(var->win, mouse_hook, var->mlx);
+	var->img.img = mlx_new_image(var->mlx, var->win_width, var->win_height);
+	var->img.addr = (int *)mlx_get_data_addr(var->img.img, &var->img.bits_per_pixel, &var->img.line_length, &var->img.endian);
 	//rainbow(img, *mlx, *win, window);
 	//gradient(img, *mlx, *win, window);
 	//circle(img, *mlx, *win, window);
 	//mandelbrot(img, *mlx, *win, window);
-	julia(img, *mlx, *win, window);
+	julia(var);
 	
 }
 
 int	main()
 {
-	t_data	img;
-	void	*mlx;
-	void	*win;
+	t_graph	var;
 
-	mlx = NULL;
-	win = NULL;
+	var.mlx = NULL;
+	var.win = NULL;
+	var.zoom = 0;
 	
-	init_win_and_img(&img, &mlx, &win);
-	mlx_loop(mlx);
-	mlx_destroy_image(mlx, img.img);
-	mlx_destroy_window(mlx, win);
+	init_win_and_img(&var);
+	mlx_loop(var.mlx);
+	mlx_destroy_image(var.mlx, var.img.img);
+	mlx_destroy_window(var.mlx, var.win);
 	//mlx_clear_window(mlx, win);
-	mlx_destroy_display(mlx);
-	free(mlx);
+	mlx_destroy_display(var.mlx);
+	free(var.mlx);
 }
