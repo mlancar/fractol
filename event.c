@@ -6,51 +6,72 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 19:07:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/11 18:27:40 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/14 23:37:48 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	key_hook(int keycode, t_graph *var)
+int	key_hook(int key_code, t_graph *var)
 {
+	double	delta_x;
+	double	delta_y;
+
+	delta_x = var->x_max - var->x_min;
+	delta_y = var->y_max - var-> y_min;
 	//printf("%f\n", var->y_min);
-	if (keycode == 113) {
-		mlx_loop_end(var);
-	}
-	if (keycode == UP)
+	if (key_code == ESC) 
 	{
-		printf("ymax%f\n", var->y_max);
-		printf("%f\n", var->zoom);
-		var->zoom = var->zoom + 1;
-		printf("apres%f\n", var->zoom);
-		
-		julia(var);
-		printf("ymax%f\n", var->y_max);
+		mlx_loop_end(var->mlx);
 	}
-	else if (keycode == DOWN)
-		var->y_max  = var->y_max  + 1;
-	else if (keycode == LEFT)
-		var->x_min  = var->x_min + 1;
-	else if (keycode == RIGHT)
-		var->x_max = var->x_max + 1;
-	//printf("%f\n",var->y_min);
-	//printf("%d\n", keycode);
+	if (key_code == UP)
+	{
+		var->y_min = var->y_min + 0.1 * delta_y;
+		var->y_max = var->y_max + 0.1 * delta_y;
+		draw(var);
+		
+	}
+	if (key_code == DOWN)
+	{
+		var->y_min = var->y_min - 0.1 * delta_y;
+		var->y_max = var->y_max - 0.1 * delta_y;
+		draw(var);
+	}
+	if (key_code == LEFT)
+	{
+		var->x_min = var->x_min - 0.1 * delta_x;
+		var->x_max = var->x_max - 0.1 * delta_x;
+		draw(var);
+	}
+	if (key_code == RIGHT)
+	{
+		var->x_min = var->x_min + 0.1 * delta_x;
+		var->x_max = var->x_max + 0.1 * delta_x;
+		draw(var);
+	}
 	return (0);
 }
 
-int	mouse_hook(int mousecode, t_graph *var)
+
+int	mouse_hook(int mouse_code, int x, int y, t_graph *var)
 {
-	if (mousecode == 4)
-		zoomin(var);
-	//printf("%d\n", mousecode);
+	if (mouse_code == 4)
+	{
+		var->zoom = 0.9;
+		var->x_min = var->x_min * var->zoom;
+		var->x_max = var->x_max * var->zoom;
+		var->y_min = var->y_min * var->zoom;
+		var->y_max = var->y_max * var->zoom;
+		draw(var);
+	}
+
+	return (0);
+	
+}
+
+int	close_window(t_graph *var)
+{
+	mlx_loop_end(var->mlx);
 	return (0);
 }
 
-void	zoomin(t_graph *var)
-{
-	var->x_min = var->x_min + 1;
-	var->y_min = var->y_min + 1;
-	var->x_max = var->x_max + 1;
-	var->y_max = var->y_max + 1;
-}

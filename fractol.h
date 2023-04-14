@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:48:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/11 17:30:34 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/14 22:51:50 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,10 @@ typedef struct s_set {
 	double	iteration_max;
 }	t_set;
 
-void	zoomin(t_graph *var);
-int		mouse_hook(int mousecode, t_graph *var);
-int		key_hook(int keycode, t_graph *var);
+void	draw(t_graph *var);
+int	close_window(t_graph *var);
+int		mouse_hook(int mouse_code, int x, int y,  t_graph *var);
+int		key_hook(int key_code, t_graph *var);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_putstr(char *str);
 void	init_win_and_img(t_graph *var);
