@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:03:54 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/14 23:17:06 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:48:10 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,10 @@ void 	init_mandelbrot_graph(t_graph *var)
 
 void	init_mandelbrot_set(t_set *z, t_graph *var)
 {
-	var->x_min = var->x_min;
-	var->x_max = var->x_max;
-	var->y_min = var->y_min;
-	var->y_max = var->y_max;
 	var->x = var->x_min + ((var->x_max - var->x_min) / var->win_width) * var->img_width;
 	var->y = var->y_max - ((var->y_max - var->y_min) / var->win_height) * var->img_height;
-	z->c_r = var->x;//parametre
-	z->c_i = var->y;//parametre
+	var->c.r = var->x;
+	var->c.i = var->y;
 	z->r = 0;
 	z->i = 0;
 	z->n = 0;

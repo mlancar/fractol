@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 19:07:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/14 23:37:48 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:54:42 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,28 @@ int	key_hook(int key_code, t_graph *var)
 	}
 	if (key_code == UP)
 	{
-		var->y_min = var->y_min + 0.1 * delta_y;
-		var->y_max = var->y_max + 0.1 * delta_y;
-		draw(var);
+		var->y_min = var->y_min + 0.01 * delta_y;
+		var->y_max = var->y_max + 0.01 * delta_y;
+		draw_fractal(var);
 		
 	}
 	if (key_code == DOWN)
 	{
-		var->y_min = var->y_min - 0.1 * delta_y;
-		var->y_max = var->y_max - 0.1 * delta_y;
-		draw(var);
+		var->y_min = var->y_min - 0.01 * delta_y;
+		var->y_max = var->y_max - 0.01 * delta_y;
+		draw_fractal(var);
 	}
 	if (key_code == LEFT)
 	{
-		var->x_min = var->x_min - 0.1 * delta_x;
-		var->x_max = var->x_max - 0.1 * delta_x;
-		draw(var);
+		var->x_min = var->x_min - 0.01 * delta_x;
+		var->x_max = var->x_max - 0.01 * delta_x;
+		draw_fractal(var);
 	}
 	if (key_code == RIGHT)
 	{
-		var->x_min = var->x_min + 0.1 * delta_x;
-		var->x_max = var->x_max + 0.1 * delta_x;
-		draw(var);
+		var->x_min = var->x_min + 0.01 * delta_x;
+		var->x_max = var->x_max + 0.01 * delta_x;
+		draw_fractal(var);
 	}
 	return (0);
 }
@@ -62,7 +62,7 @@ int	mouse_hook(int mouse_code, int x, int y, t_graph *var)
 		var->x_max = var->x_max * var->zoom;
 		var->y_min = var->y_min * var->zoom;
 		var->y_max = var->y_max * var->zoom;
-		draw(var);
+		draw_fractal(var);
 	}
 
 	return (0);

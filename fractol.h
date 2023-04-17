@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:48:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/14 22:51:50 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/17 17:54:17 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_data {
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	char	*name;
 }	t_data;
 
 typedef struct s_color {
@@ -58,6 +59,16 @@ typedef struct s_color {
 	int			per_gradient;
 	double		per_pixel;
 }	t_color;
+
+typedef struct s_set {
+	double	r;
+	double	i;
+	double	n;
+	double	c_i;
+	double	c_r;
+	double	tmp;
+	double	iteration_max;
+}	t_set;
 
 typedef struct s_graph {
 	double	x;
@@ -75,25 +86,19 @@ typedef struct s_graph {
 	int		img_width;
 	double	zoom;
 	t_data	img;
+	t_set	c;
 }	t_graph;
 
-typedef struct s_set {
-	double	r;
-	double	i;
-	double	n;
-	double	c_i;
-	double	c_r;
-	double	tmp;
-	double	iteration_max;
-}	t_set;
 
-void	draw(t_graph *var);
-int	close_window(t_graph *var);
+char	check_name(t_graph *var);
+int		check_args(int ac, char **av);
+void	draw_fractal(t_graph *var);
+int		close_window(t_graph *var);
 int		mouse_hook(int mouse_code, int x, int y,  t_graph *var);
 int		key_hook(int key_code, t_graph *var);
 int		ft_strcmp(char *s1, char *s2);
 void	ft_putstr(char *str);
-void	init_win_and_img(t_graph *var);
+void	init_win_and_img(t_graph *var, char *s1, char *s2);
 int		find_position(int color_per_gradient, int interval);
 t_color	init_color_rainbow(t_color color, t_graph *var);
 t_color	init_color_gradient(t_color color, t_graph *var);
@@ -108,7 +113,7 @@ void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color);
 void	mandelbrot(t_graph *var);
 void	init_julia_graph(t_graph *var);
 void	init_julia_set(t_set *z, t_graph *var);
-void	re_init_julia_set(t_set *z);
+void	re_init_julia_set(t_set *z, t_graph *var);
 void	color_julia_set(t_graph *var, t_set *z, t_color color);
 void	julia(t_graph *var);
 
