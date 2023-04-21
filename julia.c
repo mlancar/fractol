@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:02:58 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/17 17:47:06 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/21 18:45:40 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,17 @@
 
 void 	init_julia_graph(t_graph *var)
 {
-	var->x_min = -1;
-	var->x_max = 1;
-	var->y_min = -1.2;
-	var->y_max = 1.2;
+	var->x_min = -1.6;
+	var->x_max = 1.6;
+	var->y_min = -1.6;
+	var->y_max = 1.6;
 }
 
 void	init_julia_set(t_set *z, t_graph *var)
 {
 	var->x = var->x_min + ((var->x_max - var->x_min) / var->win_width) * var->img_width;
 	var->y = var->y_max - ((var->y_max - var->y_min) / var->win_height) * var->img_height;
-	//z->c_r = -0.835;//parametre
-	//z->c_i = -0.232;//parametre
-	var->c.r = 0.285;
-	var->c.i = 0.01;
+
 	z->r = var->x;
 	z->i = var->y;
 	z->n = 0;
@@ -42,27 +39,6 @@ void	re_init_julia_set(t_set *z, t_graph *var)
 	z->n = z->n + 1;
 }
 
-/*void	color_julia_set(t_graph *var, t_set *z, t_color color)
-{
-	if (z->n == z->iteration_max)
-		var->img.addr[var->img_height * var->win_width + var->img_width] = 0x000000;
-	else
-	{
-		if ((z->n / z->iteration_max) < 0.50)
-		{
-			color.pixel =   0x320053 + (int) (4000 * z->n / z->iteration_max) * CHANGE_RED;
-			var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel;
-		}
-		else
-		{
-			color.pixel =  color.pixel + (int) (4000 * z->n / z->iteration_max) * CHANGE_RED;
-			var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel;
-		}
-		
-		//printf("coucou = %f\n", var->y_max);
-	}
-}*/
-
 void	color_julia_set(t_graph *var, t_set *z, t_color color)
 {
 	if (z->n == z->iteration_max)
@@ -73,7 +49,6 @@ void	color_julia_set(t_graph *var, t_set *z, t_color color)
 		{
 			color.pixel = 0x320053 + (int) (255 * z->n / z->iteration_max * 4) * CHANGE_RED;
 			var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel;
-			//printf("%d\n", color.pixel);
 		}
 		else if ((z->n / z->iteration_max) > 0.20 && (z->n / z->iteration_max) < 0.40)
 		{
