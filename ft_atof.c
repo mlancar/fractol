@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 18:14:15 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/21 14:57:10 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/24 17:06:47 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	ft_recursive_power(int nb, int power)
 
 int	ft_atoi(char *str)
 {
-	int i;
-	int result;
+	int	i;
+	int	result;
 	int	sign;
 
 	i = 0;
@@ -50,7 +50,7 @@ double	ft_atof(char *str)
 	int		sign;
 	double	before;
 	double	after;
-	
+
 	i = 0;
 	j = 0;
 	sign = 1;
@@ -59,7 +59,7 @@ double	ft_atof(char *str)
 	before = ft_atoi(str);
 	if (str[i] == '-')
 		sign = -1;
-	while(str[i] != '.')
+	while (str[i] != '.')
 		i++;
 	if (str[i] == '.')
 		i++;

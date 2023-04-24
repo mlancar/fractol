@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:03:54 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/17 17:48:10 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/24 18:58:26 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ void 	init_mandelbrot_graph(t_graph *var)
 
 void	init_mandelbrot_set(t_set *z, t_graph *var)
 {
-	var->x = var->x_min + ((var->x_max - var->x_min) / var->win_width) * var->img_width;
-	var->y = var->y_max - ((var->y_max - var->y_min) / var->win_height) * var->img_height;
+	double	delta_x;
+	double	delta_y;
+
+	delta_x = var->x_max - var->x_min;
+	delta_y = var->y_max - var->y_min;
+	var->x = var->x_min + (delta_x / var->win_width) * var->img_width;
+	var->y = var->y_max - (delta_y / var->win_height) * var->img_height;
 	var->c.r = var->x;
 	var->c.i = var->y;
 	z->r = 0;
@@ -42,13 +47,17 @@ void	re_init_mandelbrot_set(t_set *z)
 
 void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color)
 {
+	int CHANGE_RED = 16 * 16 * 16 * 16;
+	int	CHANGE_BLUE = 1;
+	int CHANGE_GREEN = 16 * 16;
+	
 	if (z->n == z->iteration_max)
 	var->img.addr[var->img_height * var->win_width + var->img_width] = 0x000000;
 	else
 	{
 		if ((z->n / z->iteration_max) < 0.50)
 		{
-			color.pixel = BLUE;
+			color.pixel = BLACK;
 			color.pixel = color.pixel + (int) (255 * z->n / z->iteration_max * 4) * CHANGE_BLUE;
 			var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel;
 		}
@@ -57,7 +66,6 @@ void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color)
 			color.pixel = color.pixel + (int) (255 * z->n / z->iteration_max * 4) * CHANGE_BLUE;
 			var->img.addr[var->img_height * var->win_width + var->img_width] = color.pixel;
 		}
-		
 	}
 }
 
