@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:03:54 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/24 18:58:26 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:59:51 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,21 @@
 
 void 	init_mandelbrot_graph(t_graph *var)
 {
-	var->x_min = -2.1;
-	var->x_max = 0.6;
-	var->y_min = -1.2;
-	var->y_max = 1.2;
+	if (var->c.p == 2)
+	{
+		var->x_min = -2.1;
+		var->x_max = 0.6;
+		var->y_min = -1.2;
+		var->y_max = 1.2;
+	}
+	else if (var->c.p > 2)
+	{
+		var->x_min = -1.4;
+		var->x_max = 1.3;
+		var->y_min = -1.2;
+		var->y_max = 1.2;
+	}
+	printf("xmin = %f\n", var->x_min);
 }
 
 void	init_mandelbrot_set(t_set *z, t_graph *var)
@@ -29,8 +40,8 @@ void	init_mandelbrot_set(t_set *z, t_graph *var)
 	delta_y = var->y_max - var->y_min;
 	var->x = var->x_min + (delta_x / var->win_width) * var->img_width;
 	var->y = var->y_max - (delta_y / var->win_height) * var->img_height;
-	var->c.r = var->x;
-	var->c.i = var->y;
+	z->c_r = var->x;
+	z->c_i = var->y;
 	z->r = 0;
 	z->i = 0;
 	z->n = 0;
@@ -43,6 +54,24 @@ void	re_init_mandelbrot_set(t_set *z)
 	z->r = (z->r * z->r) - (z->i * z->i) + z->c_r;
 	z->i = (2 * z->i * z->tmp) + z->c_i;
 	z->n = z->n + 1;
+}
+
+void z_puissance_3(t_set *z, t_graph *var)
+{
+	double	power;
+	double cosinus;
+	double	atan;
+	double	sinus;
+
+	power = pow(sqrt(((z->r * z->r) + (z->i * z->i))), var->c.p);
+	atan = atan2(z->i, z->r);
+	cosinus = cos(var->c.p * atan);
+	sinus = sin(var->c.p* atan);
+	z->tmp = power * cosinus + z->c_r;
+	z->i = power * sinus + z->c_i;
+	z->r = z->tmp;
+	z->n = z->n + 1;
+	
 }
 
 void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color)
@@ -83,7 +112,7 @@ void	mandelbrot(t_graph *var)
 		{
 			init_mandelbrot_set(&z, var);
 			while (((z.r * z.r) + (z.i * z.i)) < 4 && z.n < z.iteration_max)
-				re_init_mandelbrot_set(&z);
+				z_puissance_3(&z, var);
 			color_mandelbrot_set(var, &z, color);
 			var->img_width++;
 		}

@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 16:51:52 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/24 19:00:41 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:35:12 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,12 @@ int	check_param(char **av, t_graph *var)
 	}
 	else if (check_name(var) == 'M')
 	{
-		if ((ft_strcmp(av[2], "0") != 0) || (ft_strcmp(av[3], "0") != 0))
+		int	param;
+
+		param = ft_atoi(av[2]);
+		if (param > 1 && param < 100)
+			return (1);
+		else
 			return (0);
 	}
 	return (1);

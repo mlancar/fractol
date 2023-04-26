@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:48:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/24 19:00:48 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:25:16 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct s_color {
 
 typedef struct s_set {
 	int		color;
+	int		p;
 	double	r;
 	double	i;
 	double	n;
@@ -88,6 +89,8 @@ typedef struct s_graph {
 	t_set	set;
 }	t_graph;
 
+int		ft_atoi(char *str);
+void	z_puissance_3(t_set *z, t_graph *var);
 void	color_julia(t_graph *var, t_set *z, t_color color, int change_red);
 void	color_julia_2(t_graph *var, t_set *z, t_color color);
 int		check_color_set(char **av, t_graph *var);

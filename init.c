@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:38:17 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/24 18:16:37 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/26 19:46:25 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,10 @@ void	init_win_and_img(t_graph *var, char *s1, char *s2)
 		init_julia_graph(var);
 	}
 	else if (check_name(var) == 'M')
+	{
+		var->c.p = ft_atoi(s1);
 		init_mandelbrot_graph(var);
+	}
 	draw_fractal(var);
 }
 
