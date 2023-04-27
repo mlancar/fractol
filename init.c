@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/22 22:38:17 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/26 19:46:25 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/27 18:47:53 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,31 @@ void	init_win_and_img(t_graph *var, char *s1, char *s2)
 	var->img.img = mlx_new_image(var->mlx, var->win_width, var->win_height);
 	var->img.addr = (int *)mlx_get_data_addr(var->img.img,
 			&var->img.bits_per_pixel, &var->img.line_length, &var->img.endian);
+	init_fractal(var, s1, s2);
+	draw_fractal(var);
+}
+
+void	init_fractal(t_graph *var, char *s1, char *s2)
+{
 	if (check_name(var) == 'J')
 	{
 		var->c.r = ft_atof(s1);
 		var->c.i = ft_atof(s2);
+		printf("color set = %d\n", var->set.color);
 		init_julia_graph(var);
 	}
 	else if (check_name(var) == 'M')
+		init_mandelbrot_graph(var);
+	else if (check_name(var) == 'X')
 	{
 		var->c.p = ft_atoi(s1);
-		init_mandelbrot_graph(var);
+		init_multibrot_graph(var);
 	}
-	draw_fractal(var);
+	else if (check_name(var) == 'N')
+	{
+		var->c.p = ft_atoi(s1);
+		init_newton_graph(var);
+	}
 }
 
 void	draw_fractal(t_graph *var)
@@ -46,6 +59,10 @@ void	draw_fractal(t_graph *var)
 		julia(var);
 	else if (check_name(var) == 'M')
 		mandelbrot(var);
+	else if (check_name(var) == 'X')
+		multibrot(var);
+	else if (check_name(var) == 'N')
+		newton(var);
 }
 
 int	main(int ac, char **av)
@@ -64,7 +81,6 @@ int	main(int ac, char **av)
 		mlx_loop(var.mlx);
 		mlx_destroy_image(var.mlx, var.img.img);
 		mlx_destroy_window(var.mlx, var.win);
-		//mlx_clear_window(var.mlx, var.win);
 		mlx_destroy_display(var.mlx);
 		free(var.mlx);
 	}

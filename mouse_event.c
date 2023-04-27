@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 17:00:11 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/24 18:58:48 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:07:16 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	mouse_hook(int mouse_code, int x, int y, t_graph *var)
 {
-	double	d_x;
-	double	d_y;
-
 	if (mouse_code == 5)
 	{
 		zoom_out(x, y, var);

@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandelbrot.c                                       :+:      :+:    :+:   */
+/*   multibrot.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/07 18:03:54 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/27 19:39:48 by malancar         ###   ########.fr       */
+/*   Created: 2023/04/27 17:08:38 by malancar          #+#    #+#             */
+/*   Updated: 2023/04/27 19:39:57 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-void	init_mandelbrot_graph(t_graph *var)
+void	init_multibrot_graph(t_graph *var)
 {
-	var->x_min = -2.1;
-	var->x_max = 0.6;
+	var->x_min = -1.4;
+	var->x_max = 1.3;
 	var->y_min = -1.2;
 	var->y_max = 1.2;
 }
 
-void	init_mandelbrot_set(t_set *z, t_graph *var)
+void	init_multibrot_set(t_set *z, t_graph *var)
 {
 	double	delta_x;
 	double	delta_y;
@@ -34,22 +34,31 @@ void	init_mandelbrot_set(t_set *z, t_graph *var)
 	z->r = 0;
 	z->i = 0;
 	z->n = 0;
-	z->iteration_max = 150;
+	z->iteration_max = 130;
 }
 
-void	re_init_mandelbrot_set(t_set *z)
+void	re_init_multibrot_set(t_set *z, t_graph *var)
 {
-	z->tmp = z->r;
-	z->r = (z->r * z->r) - (z->i * z->i) + z->c_r;
-	z->i = (2 * z->i * z->tmp) + z->c_i;
+	double	power;
+	double	cosinus;
+	double	atan;
+	double	sinus;
+
+	power = pow(sqrt(((z->r * z->r) + (z->i * z->i))), var->c.p);
+	atan = atan2(z->i, z->r);
+	cosinus = cos(var->c.p * atan);
+	sinus = sin(var->c.p * atan);
+	z->tmp = power * cosinus + z->c_r;
+	z->i = power * sinus + z->c_i;
+	z->r = z->tmp;
 	z->n = z->n + 1;
 }
 
-void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color)
+void	color_multibrot_set(t_graph *var, t_set *z, t_color color)
 {
 	int		change_blue;
 	int		index;
-	
+
 	color.p_i = z->n / z->iteration_max;
 	index = var->img_height * var->win_width + var->img_width;
 	change_blue = 1;
@@ -70,7 +79,7 @@ void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color)
 	}
 }
 
-void	mandelbrot(t_graph *var)
+void	multibrot(t_graph *var)
 {
 	t_color	color;
 	t_set	z;
@@ -82,10 +91,10 @@ void	mandelbrot(t_graph *var)
 		var->img_width = 0;
 		while (var->img_width < var->win_width)
 		{
-			init_mandelbrot_set(&z, var);
+			init_multibrot_set(&z, var);
 			while (((z.r * z.r) + (z.i * z.i)) < 4 && z.n < z.iteration_max)
-				re_init_mandelbrot_set(&z);
-			color_mandelbrot_set(var, &z, color);
+				re_init_multibrot_set(&z, var);
+			color_multibrot_set(var, &z, color);
 			var->img_width++;
 		}
 		var->img_height++;

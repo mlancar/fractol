@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:02:58 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/24 18:57:09 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/27 19:34:32 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	julia(t_graph *var)
 	t_set	z;
 
 	var->img_height = 0;
-	color = init_color_gradient(color, var);
+	init_color_gradient(&color, var);
 	while (var->img_height < var->win_height)
 	{
 		var->img_width = 0;
@@ -60,7 +60,7 @@ void	julia(t_graph *var)
 				re_init_julia_set(&z, var);
 			if (var->set.color == 1)
 				color_julia_set1(var, &z, color);
-			else
+			else if (var->set.color == 2)
 				color_julia_set2(var, &z, color);
 			var->img_width++;
 		}
