@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 18:03:54 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/27 19:39:48 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/29 19:47:44 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,31 +45,6 @@ void	re_init_mandelbrot_set(t_set *z)
 	z->n = z->n + 1;
 }
 
-void	color_mandelbrot_set(t_graph *var, t_set *z, t_color color)
-{
-	int		change_blue;
-	int		index;
-	
-	color.p_i = z->n / z->iteration_max;
-	index = var->img_height * var->win_width + var->img_width;
-	change_blue = 1;
-	if (z->n == z->iteration_max)
-	var->img.addr[var->img_height * var->win_width + var->img_width] = 0x000000;
-	else
-	{
-		if ((z->n / z->iteration_max) < 0.50)
-		{
-			color.pixel = BLACK + (int)(255 * color.p_i * 4) *change_blue;
-			var->img.addr[index] = color.pixel;
-		}
-		else if ((z->n / z->iteration_max) > 0.50)
-		{
-			color.pixel = color.pixel + (int)(255 * color.p_i * 4) *change_blue;
-			var->img.addr[index] = color.pixel;
-		}
-	}
-}
-
 void	mandelbrot(t_graph *var)
 {
 	t_color	color;
@@ -85,7 +60,7 @@ void	mandelbrot(t_graph *var)
 			init_mandelbrot_set(&z, var);
 			while (((z.r * z.r) + (z.i * z.i)) < 4 && z.n < z.iteration_max)
 				re_init_mandelbrot_set(&z);
-			color_mandelbrot_set(var, &z, color);
+			init_color_set(var, &z, color);
 			var->img_width++;
 		}
 		var->img_height++;

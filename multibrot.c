@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 17:08:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/04/27 19:39:57 by malancar         ###   ########.fr       */
+/*   Updated: 2023/04/29 19:47:50 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	multibrot(t_graph *var)
 			init_multibrot_set(&z, var);
 			while (((z.r * z.r) + (z.i * z.i)) < 4 && z.n < z.iteration_max)
 				re_init_multibrot_set(&z, var);
-			color_multibrot_set(var, &z, color);
+			init_color_set(var, &z, color);
 			var->img_width++;
 		}
 		var->img_height++;
